@@ -18,9 +18,8 @@ openai_key: <key>
 
 For better project structure, we use multiple scripts to handle different tasks:
 
-## Generating data and (optionally) translating it to AAE
-```bash
-bash generate_data.sh [answer_generation_model] [aae_conversion_model]
+## Generating data
+bash generate_data.sh [answer_generation_model]
 ```
 
 ## Generating the models judgements

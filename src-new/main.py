@@ -133,6 +133,8 @@ def prepare_judgement_inputs(
         question_1, question_2 = item_1["question"], item_2["question"]
         answer_1 = item_1["answers"]["answer1"]["answer"]
         answer_2 = item_2["answers"]["answer1"]["answer"]
+        if data_1_model_name == data_2_model_name:
+            answer_2 = item_2["answers"]["answer2"]["answer"]
         # name_1, name_2 = item_1["model_name"], item_2["model_name"]
         name_1, name_2 = data_1_model_name, data_2_model_name
 

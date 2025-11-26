@@ -94,6 +94,11 @@
                 "aae",
                 "simple"
             ]
+        },
+        {
+            "compare_against": "gpt-4.1",
+            "status": "NOT_FINISHED",
+            "done": []
         }
     ]
 }
