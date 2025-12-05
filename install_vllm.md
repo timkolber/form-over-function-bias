@@ -1,5 +1,6 @@
 `module load devel/cuda/12.8`
 `module load devel/python/3.12.3-gnu-14.2`
+`module load devel/miniforge/25.3.1-python-3.12`
 `conda create -n vLLM-test python=3.12 -y` # this should install it into /home/hd/hd_hd/hd_*/miniconda3/envs/vLLM-test
 `conda activate vLLM-test`
 `pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128` do not use uv!
