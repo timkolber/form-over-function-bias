@@ -92,6 +92,8 @@ class Model(ABC):
         pattern = r"^\s*\S*(Answer1|Answer2|Tie)\S*\s*$"
         matches = []
         for line in text.split("\n"):
+            line = line.replace("Answer 1", "Answer1")
+            line = line.replace("Answer 2", "Answer2")
             match = re.match(pattern, line, flags=re.IGNORECASE)
             if match:
                 matches.append(match.group(1).lower())
