@@ -99,6 +99,24 @@ def create_position_bias_mitigation_dict(
     Returns:
         dict: A dictionary containing both orderings of answers.
     """
+
+    same_model = name_model_1 == name_model_2
+
+    if same_model:
+        # Distinguish answers but keep single ordering
+        return {
+            "model1-first": {
+                "answer1": {"text": answer_model_1, "label": f"{name_model_1}_1"},
+                "answer2": {"text": answer_model_2, "label": f"{name_model_2}_2"},
+                "tie": {"text": None, "label": "TIE"},
+            },
+            "model2-first": {
+                "answer1": {"text": answer_model_2, "label": f"{name_model_1}_1"},
+                "answer2": {"text": answer_model_1, "label": f"{name_model_2}_2"},
+                "tie": {"text": None, "label": "TIE"},
+        },
+        }
+
     return {
         "model1-first": {
             "answer1": {"text": answer_model_1, "label": name_model_1},
@@ -157,7 +175,7 @@ def prepare_judgement_inputs(
         )
 
         for question, model_name in questions_to_use:
-            for answer_position in ["model1-first", "model2-first"]:
+            for answer_position in answer_dict.keys():
                 input_text = prompt_template.format(
                     question=question,
                     answer1=answer_dict[answer_position]["answer1"]["text"],
@@ -230,6 +248,11 @@ def main() -> None:
         comp_data_model = task["compare_against"]
         comp_data_path = get_file_path(comp_data_model, "")
         comp_data = read_data_file(comp_data_path)
+
+        # This ensures AAVE and simplifed are skipped for position bias (i.e. same model)
+        if comp_data_model == base_data_model and base_data_variant != "":
+            tasks = mark_variant_as_done(task, base_data_variant, task_filepath)
+            continue
 
         logger.info(
             f"Processing task: base_data_model={base_data_model}, base_data_variant={base_data_variant}, compare_against={comp_data_model}"
