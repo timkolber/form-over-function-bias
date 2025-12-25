@@ -89,7 +89,6 @@ def calculate_position_bias(file: str):
         num_parsed_questions = sum(total)
         first_pos_percentage = total[0] / num_parsed_questions
         second_pos_percentage = total[1] / num_parsed_questions
-        
     return (
         results_simple,
         (
@@ -110,9 +109,12 @@ def plot_position_bias(data, models, file) -> None:
     )
 
     fig.data[0].name = "First Position"
+
     fig.data[1].name = "TIE"
+
     fig.data[2].name = "Second Position"
 
+    # Ensure y-axis label is explicit
     fig.update_yaxes(title_text="Percentage of All Answers")
     fig.update_xaxes(title_text="")
     fig.update_layout(legend_title_text="Chosen Answer")
