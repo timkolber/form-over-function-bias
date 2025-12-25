@@ -1,6 +1,6 @@
 import json
 import statistics
-from typing import Tuple
+from typing import List, Tuple
 
 import plotly.express as px
 
@@ -89,6 +89,7 @@ def calculate_position_bias(file: str):
         num_parsed_questions = sum(total)
         first_pos_percentage = total[0] / num_parsed_questions
         second_pos_percentage = total[1] / num_parsed_questions
+
     return (
         results_simple,
         (
@@ -99,7 +100,9 @@ def calculate_position_bias(file: str):
     )
 
 
-def plot_position_bias(data, models, file) -> None:
+def plot_position_bias(
+    data: List[Tuple[float, float, float]], models: List[str], file: str
+) -> None:
 
     fig = px.bar(
         x=models,
@@ -107,18 +110,15 @@ def plot_position_bias(data, models, file) -> None:
         barmode="group",
         color_discrete_sequence=px.colors.qualitative.G10,
     )
-
+    # Label the groups
     fig.data[0].name = "First Position"
-
     fig.data[1].name = "TIE"
-
     fig.data[2].name = "Second Position"
-
     # Ensure y-axis label is explicit
     fig.update_yaxes(title_text="Percentage of All Answers")
     fig.update_xaxes(title_text="")
     fig.update_layout(legend_title_text="Chosen Answer")
-
+    # Write to output file
     fig.write_image(file, "svg")
 
 
