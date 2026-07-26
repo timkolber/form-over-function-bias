@@ -126,7 +126,7 @@ def write_results_to_excel(
     style_pairs: List[Tuple[str, str]], output_filename: str, output_directory: str
 ) -> None:
     """Write the analysis results to an Excel file with multiple metrics."""
-    metrics = ["asr", "aasr", "fr", "cr"]
+    metrics = ["asr", "asr_with_ties", "aasr", "aasr_with_ties", "fr", "cr"]
 
     with pd.ExcelWriter(f"{output_filename}.xlsx", engine="xlsxwriter") as writer:
         for metric in metrics:
@@ -163,4 +163,4 @@ def create_excel_overview(judgement_files_directory: str, excel_output_directory
 
 
 if __name__ == "__main__":
-    create_excel_overview("data/judgements", "data/analysis_results")
+    create_excel_overview("outputs/debug/judgements", "outputs/debug/judgements/excel_overviews")

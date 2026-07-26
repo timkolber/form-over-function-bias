@@ -170,7 +170,9 @@ def count_judgement_transitions_between_files(
 
     better_model_wins_file2_after_better = 0
     worse_model_wins_file2_after_better = 0
+    worse_model_wins_file2_after_better_or_tie = 0
     better_model_wins_file2_after_worse = 0
+    better_model_wins_file2_after_worse_or_tie = 0
     worse_model_wins_file2_after_worse = 0
     flips = 0
 
@@ -185,6 +187,7 @@ def count_judgement_transitions_between_files(
             better_model_wins_file1 += 1
             if file2_winner == worse_model_name:
                 worse_model_wins_file2_after_better += 1
+                worse_model_wins_file2_after_better_or_tie += 1
                 flips += 1
             elif file2_winner == "TIE":
                 flips += 1
@@ -194,6 +197,7 @@ def count_judgement_transitions_between_files(
             worse_model_wins_file1 += 1
             if file2_winner == better_model_name:
                 better_model_wins_file2_after_worse += 1
+                better_model_wins_file2_after_worse_or_tie += 1
                 flips += 1
             elif file2_winner == "TIE":
                 flips += 1
@@ -201,6 +205,10 @@ def count_judgement_transitions_between_files(
                 worse_model_wins_file2_after_worse += 1
         else:
             ties_file1 += 1
+            if file2_winner == better_model_name:
+                better_model_wins_file2_after_worse_or_tie += 1
+            elif file2_winner == worse_model_name:
+                worse_model_wins_file2_after_better_or_tie += 1
             if file2_winner != "TIE":
                 flips += 1
 
@@ -212,6 +220,8 @@ def count_judgement_transitions_between_files(
         "worse_model_wins_file2_after_better": worse_model_wins_file2_after_better,
         "better_model_wins_file2_after_worse": better_model_wins_file2_after_worse,
         "worse_model_wins_file2_after_worse": worse_model_wins_file2_after_worse,
+        "better_model_wins_file2_after_worse_or_tie": better_model_wins_file2_after_worse_or_tie,
+        "worse_model_wins_file2_after_better_or_tie": worse_model_wins_file2_after_better_or_tie,
         "flips": flips,
     }
 
@@ -226,6 +236,16 @@ def calculate_asr(outcomes: Dict[str, int]) -> float:
     )
     return asr
 
+def calculate_asr_with_ties(outcomes: Dict[str, int]) -> float:
+    """Calculate Attack Success Rate with ties: how often better_model_name wins flip to worse_model_name wins or ties."""
+    asr = (
+        outcomes["worse_model_wins_file2_after_better_or_tie"]
+        / (outcomes["better_model_wins_file1"] + outcomes["ties_file1"])
+        if (outcomes["better_model_wins_file1"] + outcomes["ties_file1"]) > 0
+        else 0.0
+    )
+    return asr
+
 
 def calculate_aasr(outcomes: Dict[str, int]) -> float:
     """Calculate Anti Attack Success Rate: how often worse_model_name wins after better_model_name wins."""
@@ -233,6 +253,16 @@ def calculate_aasr(outcomes: Dict[str, int]) -> float:
         outcomes["better_model_wins_file2_after_worse"]
         / outcomes["worse_model_wins_file1"]
         if outcomes["worse_model_wins_file1"] > 0
+        else 0.0
+    )
+    return aasr
+
+def calculate_aasr_with_ties(outcomes: Dict[str, int]) -> float:
+    """Calculate Anti Attack Success Rate with ties: how often worse_model_name wins after better_model_name wins or ties."""
+    aasr = (
+        outcomes["better_model_wins_file2_after_worse_or_tie"]
+        / (outcomes["worse_model_wins_file1"] + outcomes["ties_file1"])
+        if (outcomes["worse_model_wins_file1"] + outcomes["ties_file1"]) > 0
         else 0.0
     )
     return aasr
@@ -349,7 +379,9 @@ def run_analysis_on_judgements(
 
     result = {
         "asr": calculate_asr(outcomes),
+        "asr_with_ties": calculate_asr_with_ties(outcomes),
         "aasr": calculate_aasr(outcomes),
+        "aasr_with_ties": calculate_aasr_with_ties(outcomes),
         "fr": calculate_fr(outcomes),
         "cr": calculate_cr(outcomes),
         "v1": outcomes["better_model_wins_file1"],
