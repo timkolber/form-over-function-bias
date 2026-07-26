@@ -163,4 +163,4 @@ def create_excel_overview(judgement_files_directory: str, excel_output_directory
 
 
 if __name__ == "__main__":
-    create_excel_overview("outputs/debug/judgements", "outputs/debug/judgements/excel_overviews")
+    create_excel_overview("outputs/debug/judgements", "outputs/debug/excel_overviews")
