@@ -237,7 +237,7 @@ def calculate_asr(outcomes: Dict[str, int]) -> float:
     return asr
 
 def calculate_asr_with_ties(outcomes: Dict[str, int]) -> float:
-    """Calculate Attack Success Rate with ties: how often better_model_name wins flip to worse_model_name wins or ties."""
+    """Calculate Attack Success Rate with ties: how often better_model_name wins or ties flip to worse_model_name wins."""
     asr = (
         outcomes["worse_model_wins_file2_after_better_or_tie"]
         / (outcomes["better_model_wins_file1"] + outcomes["ties_file1"])
@@ -258,7 +258,7 @@ def calculate_aasr(outcomes: Dict[str, int]) -> float:
     return aasr
 
 def calculate_aasr_with_ties(outcomes: Dict[str, int]) -> float:
-    """Calculate Anti Attack Success Rate with ties: how often worse_model_name wins after better_model_name wins or ties."""
+    """Calculate Anti Attack Success Rate with ties: how often worse_model_name wins or ties after better_model_name wins."""
     aasr = (
         outcomes["better_model_wins_file2_after_worse_or_tie"]
         / (outcomes["worse_model_wins_file1"] + outcomes["ties_file1"])
