@@ -1,6 +1,6 @@
-# Research Project
+# Form over Function: Linguistic Bias Towards Standard American English in LLM-as-a-Judge
 
-This repository contains the code and data for our research project on evaluating the impact of linguistic bias in LLM-as-a-judge-systems.
+This repository contains the code and data for our research project evaluating the impact of linguistic bias in LLM-as-a-judge systems.
 
 [Link to final paper]
 
